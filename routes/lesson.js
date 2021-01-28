@@ -1,13 +1,10 @@
 const express = require('express');
 const DbConnection = require('../config/db');
 var ObjectId = require('mongodb').ObjectId;
-const staticfile = require('../middlewares/staticfile')
-
 
 const router = express.Router();
 
-
-router.get('/', staticfile, async (req, res) => {
+router.get('/', async (req, res) => {
     let connection = await DbConnection.Get();
     var db = connection.db('vuecw2');
     await db.collection('lesson').find({}).toArray(function (err, result) {
@@ -34,9 +31,9 @@ router.put('/:id', async (req, res) => {
                 res.send("No course found with this id").status(404)
             }
             else {
-                var myquery = { space: result.space };
+                var myquery = { spaces: result.spaces };
                 var newvalues = {
-                    $set: { space: (result.space - 1) }
+                    $set: { spaces: (result.spaces - 1) }
                 };
                 db.collection("lesson").updateOne(myquery, newvalues, function (err, dbres) {
                     if (err) {
@@ -44,7 +41,7 @@ router.put('/:id', async (req, res) => {
                     }
                     else {
                         res.send({
-                            ...result, space: result.space - 1
+                            ...result, spaces: result.spaces - 1
                         })
                     }
                 });
