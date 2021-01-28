@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+const customLogger = require('./middlewares/customLogger')
 
+app.use(customLogger);
 
 app.use(express.json({ limit: '50mb', extended: false }));
 
